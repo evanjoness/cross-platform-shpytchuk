@@ -48,6 +48,7 @@ class Program
         else
         {
             Console.WriteLine("-");
+            File.WriteAllText("OUTPUT.TXT", "-");
         }
     }
 }
