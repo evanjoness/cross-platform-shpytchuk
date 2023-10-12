@@ -5,6 +5,11 @@ using System.Numerics;
 
 public class CactusAS
 {
+    public static void Main(string[] args)
+    {
+        new CactusAS().Run();
+    }
+
     List<int>[] edges;
     int n;
     bool[] done;
@@ -154,8 +159,5 @@ public class CactusAS
         return answer[x];
     }
 
-    public static void Main(string[] args)
-    {
-        new CactusAS().Run();
-    }
+
 }
