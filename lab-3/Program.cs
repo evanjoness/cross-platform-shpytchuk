@@ -68,7 +68,7 @@ public class NewYearAS
 
         for (int i = 1; i < n + 1; i++)
         {
-            foreach (Edge e in g.edges[i]) // Change 'Edges' to 'edges'
+            foreach (Edge e in g.edges[i]) 
             {
                 if (e.i != 0 && e.f == 0)
                 {
@@ -129,7 +129,7 @@ public class NewYearAS
             int[] d = new int[n];
             bool[] u = new bool[n];
 
-            // Run Bellman-Ford algorithm
+
             d[s] = 0;
             u[s] = true;
             bool changed = true;
@@ -154,7 +154,6 @@ public class NewYearAS
                 }
             }
 
-            // Potentials
             int[] q = new int[n];
 
             for (int i = 0; i < n; i++)
