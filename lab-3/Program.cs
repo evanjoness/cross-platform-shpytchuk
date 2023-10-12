@@ -11,7 +11,10 @@ public class NewYearAS
 
     public void Run()
     {
-        StreamReader reader = new StreamReader("INPUT.TXT");
+        string inputPath = "../../../INPUT.TXT";
+        string outputPath = "../../../OUTPUT.TXT";
+
+        StreamReader reader = new StreamReader(inputPath);
         string[] input = reader.ReadLine().Split();
         int n = int.Parse(input[0]);
         int m = int.Parse(input[1]);
@@ -78,7 +81,7 @@ public class NewYearAS
             }
         }
 
-        StreamWriter writer = new StreamWriter("OUTPUT.TXT");
+        StreamWriter writer = new StreamWriter(outputPath);
         Console.WriteLine(cost);
         Console.WriteLine(nbuy);
         writer.WriteLine(cost);

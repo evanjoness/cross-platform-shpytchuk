@@ -7,7 +7,10 @@ class Program
     static void Main()
     {
         // Читаємо вхідні дані з файлу INPUT.TXT
-        string[] input = File.ReadAllLines("INPUT.TXT");
+        string inputPath = "../../../INPUT.TXT";
+        string outputPath = "../../../OUTPUT.TXT";
+
+        string[] input = File.ReadAllLines(inputPath);
         int n, k, p;
         string w;
         n = int.Parse(input[0].Split()[0]);
@@ -43,12 +46,12 @@ class Program
         if (p <= w.Length)
         {
             Console.WriteLine(w[p - 1]);
-            File.WriteAllText("OUTPUT.TXT", w[p - 1].ToString());
+            File.WriteAllText(outputPath, w[p - 1].ToString());
         }
         else
         {
             Console.WriteLine("-");
-            File.WriteAllText("OUTPUT.TXT", "-");
+            File.WriteAllText(outputPath, "-");
         }
     }
 }

@@ -24,7 +24,10 @@ public class CactusAS
 
     public void Run()
     {
-        using (StreamReader reader = new StreamReader("INPUT.TXT"))
+        string inputPath = "../../../INPUT.TXT";
+        string outputPath = "../../../OUTPUT.TXT";
+
+        using (StreamReader reader = new StreamReader(inputPath))
         {
             n = int.Parse(reader.ReadLine());
             InitializeDataStructures();
@@ -52,7 +55,7 @@ public class CactusAS
         done = new bool[n];
         BigInteger result = Calc(0);
 
-        using (StreamWriter writer = new StreamWriter("OUTPUT.TXT"))
+        using (StreamWriter writer = new StreamWriter(outputPath))
         {
             writer.WriteLine(result);
             Console.WriteLine(result);
