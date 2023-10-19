@@ -3,164 +3,193 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 
-public class CactusAS
+namespace Labs
 {
-    public static void Main(string[] args)
+    public class SecondLab
     {
-        new CactusAS().Run();
-    }
+        List<int>[] edges;
+        int n;
+        bool[] done;
+        BigInteger[] answer;
+        int[] parent;
+        int[][] where;
 
-    List<int>[] edges;
-    int n;
-    bool[] done;
-    BigInteger[] answer;
-    int[] parent;
-    int[][] where;
-
-    public CactusAS()
-    {
-        n = 0;
-    }
-
-    public void Run()
-    {
-        string inputPath = "../../../INPUT.TXT";
-        string outputPath = "../../../OUTPUT.TXT";
-
-        using (StreamReader reader = new StreamReader(inputPath))
+        public SecondLab()
         {
-            n = int.Parse(reader.ReadLine());
-            InitializeDataStructures();
+            n = 0;
+        }
 
-            for (int i = 0; i < n - 1; i++)
+        public static void Run(string inputPath, string outputPath)
+        {
+            SecondLab cactus = new SecondLab();
+            try
             {
-                string[] input = reader.ReadLine().Split();
-                int a = int.Parse(input[0]) - 1;
-                int b = int.Parse(input[1]) - 1;
-                edges[a].Add(b);
-                edges[b].Add(a);
+                cactus.Execute(inputPath, outputPath);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error: {ex.Message}");
             }
         }
 
-        parent = new int[n];
-        where = new int[n][];
-        for (int i = 0; i < n; i++)
+        private void Execute(string inputPath, string outputPath)
         {
-            where[i] = new int[n];
-        }
-
-        Dfs(0);
-
-        answer = new BigInteger[n];
-        done = new bool[n];
-        BigInteger result = Calc(0);
-
-        using (StreamWriter writer = new StreamWriter(outputPath))
-        {
-            writer.WriteLine(result);
-            Console.WriteLine(result);
-        }
-    }
-
-    private void InitializeDataStructures()
-    {
-        edges = new List<int>[n];
-        for (int i = 0; i < n; i++)
-        {
-            edges[i] = new List<int>();
-        }
-    }
-
-    private void Dfs(int x)
-    {
-        foreach (int y in edges[x])
-        {
-            if (y != parent[x])
+            using (StreamReader reader = new StreamReader(inputPath))
             {
-                parent[y] = x;
-                Dfs(y);
-                for (int i = 0; i < n; i++)
+                string? line = reader.ReadLine(); // Use nullable reference type
+                if (line == null)
                 {
-                    if (where[y][i] != 0)
-                    {
-                        where[x][i] = y;
-                    }
+                    throw new ArgumentException("Input file is empty.");
                 }
-                where[x][y] = y;
-            }
-        }
-    }
 
-    private BigInteger Calc(int x)
-    {
-        if (done[x])
-        {
-            return answer[x];
-        }
-        done[x] = true;
-
-        BigInteger noEdge = BigInteger.One;
-        foreach (int y in edges[x])
-        {
-            if (y != parent[x])
-            {
-                noEdge *= Calc(y);
-            }
-        }
-
-        answer[x] = noEdge;
-        BigInteger[] backEdge = new BigInteger[n];
-        for (int i = 0; i < n; i++)
-        {
-            backEdge[i] = BigInteger.Zero;
-        }
-
-        for (int i = 0; i < n; i++)
-        {
-            if (where[x][i] != 0)
-            {
-                int j = x;
-                BigInteger r = BigInteger.One;
-                while (true)
+                if (!int.TryParse(line, out n))
                 {
-                    foreach (int y in edges[j])
+                    throw new ArgumentException("Invalid value for n in the input file.");
+                }
+
+                InitializeDataStructures();
+
+                for (int i = 0; i < n - 1; i++)
+                {
+                    line = reader.ReadLine(); // Read the next line
+                    if (line == null)
                     {
-                        if (y != parent[j] && y != where[j][i])
+                        throw new ArgumentException("Input file is missing edge data.");
+                    }
+
+                    string[] input = line.Split();
+                    if (input.Length != 2 || !int.TryParse(input[0], out int a) || !int.TryParse(input[1], out int b))
+                    {
+                        throw new ArgumentException("Invalid edge data in the input file.");
+                    }
+
+                    a--; // Decrement to match 0-based indexing
+                    b--; // Decrement to match 0-based indexing
+
+                    edges[a].Add(b);
+                    edges[b].Add(a);
+                }
+            }
+
+            parent = new int[n];
+            where = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                where[i] = new int[n];
+            }
+
+            Dfs(0);
+
+            answer = new BigInteger[n];
+            done = new bool[n];
+            BigInteger result = Calc(0);
+
+            using (StreamWriter writer = new StreamWriter(outputPath))
+            {
+                writer.WriteLine(result);
+                Console.WriteLine(result);
+            }
+        }
+
+
+        private void InitializeDataStructures()
+        {
+            edges = new List<int>[n];
+            for (int i = 0; i < n; i++)
+            {
+                edges[i] = new List<int>();
+            }
+        }
+
+        private void Dfs(int x)
+        {
+            foreach (int y in edges[x])
+            {
+                if (y != parent[x])
+                {
+                    parent[y] = x;
+                    Dfs(y);
+                    for (int i = 0; i < n; i++)
+                    {
+                        if (where[y][i] != 0)
                         {
-                            r *= Calc(y);
+                            where[x][i] = y;
                         }
                     }
-                    if (j == i)
-                    {
-                        break;
-                    }
-                    j = where[j][i];
-                }
-                backEdge[i] = r;
-                if (where[x][i] != i)
-                {
-                    answer[x] += backEdge[i];
+                    where[x][y] = y;
                 }
             }
         }
 
-        for (int i = 0; i < n; i++)
+        private BigInteger Calc(int x)
         {
-            if (where[x][i] != 0)
+            if (done[x])
             {
-                for (int j = 0; j < i; j++)
+                return answer[x];
+            }
+            done[x] = true;
+
+            BigInteger noEdge = BigInteger.One;
+            foreach (int y in edges[x])
+            {
+                if (y != parent[x])
                 {
-                    if (where[x][j] != 0 && where[x][i] != where[x][j])
+                    noEdge *= Calc(y);
+                }
+            }
+
+            answer[x] = noEdge;
+            BigInteger[] backEdge = new BigInteger[n];
+            for (int i = 0; i < n; i++)
+            {
+                backEdge[i] = BigInteger.Zero;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                if (where[x][i] != 0)
+                {
+                    int j = x;
+                    BigInteger r = BigInteger.One;
+                    while (true)
                     {
-                        BigInteger r = backEdge[i] * backEdge[j] / noEdge;
-                        answer[x] += r;
+                        foreach (int y in edges[j])
+                        {
+                            if (y != parent[j] && y != where[j][i])
+                            {
+                                r *= Calc(y);
+                            }
+                        }
+                        if (j == i)
+                        {
+                            break;
+                        }
+                        j = where[j][i];
+                    }
+                    backEdge[i] = r;
+                    if (where[x][i] != i)
+                    {
+                        answer[x] += backEdge[i];
                     }
                 }
             }
+
+            for (int i = 0; i < n; i++)
+            {
+                if (where[x][i] != 0)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (where[x][j] != 0 && where[x][i] != where[x][j])
+                        {
+                            BigInteger r = backEdge[i] * backEdge[j] / noEdge;
+                            answer[x] += r;
+                        }
+                    }
+                }
+            }
+
+            return answer[x];
         }
-
-        return answer[x];
     }
-
-
 }

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>lab_4</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+      <ItemGroup>
+      <ProjectReference Include="..\lab-1\lab-1.csproj" />
+      <ProjectReference Include="..\lab-2\lab-2.csproj" />
+      <ProjectReference Include="..\lab-3\lab-3.csproj" />
+    </ItemGroup>
+      <ItemGroup>
+        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.1.0" />
+        <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+      </ItemGroup>
+</Project>
