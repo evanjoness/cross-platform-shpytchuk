@@ -14,8 +14,9 @@ class LabRunnerApp
         {
             try
             {
-                args = new[] { "run", "lab1", "-I", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-1\INPUT.txt", 
-                    "-o", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-1\OUTPUT.txt" };
+                //test data
+                //args = new[] { "run", "lab1", "-I", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-1\INPUT.txt",
+                //    "-o", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-1\OUTPUT.txt" };
                 return CommandLineApplication.Execute<LabRunnerApp>(args);
             }
             catch (Exception ex)
