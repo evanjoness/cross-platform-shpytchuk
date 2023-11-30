@@ -15,8 +15,8 @@ class LabRunnerApp
             try
             {
                 //test data
-                //args = new[] { "run", "lab1", "-I", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-1\INPUT.txt",
-                //    "-o", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-1\OUTPUT.txt" };
+                //args = new[] { "run", "lab2", "-I", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-2\INPUT.txt",
+                //    "-o", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-2\OUTPUT.txt" };
                 return CommandLineApplication.Execute<LabRunnerApp>(args);
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ public class RunLabCommand
         }
         else
         {
-            Console.Error.WriteLine($"Error: Unknown lab {Lab}.");
+            Console.Error.WriteLine($"Error: Unknown lab {Lab}.");  
         }
     }
 }

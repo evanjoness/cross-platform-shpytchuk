@@ -6,6 +6,11 @@
     <RootNamespace>lab_4</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Shpytchuk-lab-4</Title>
+    <PackAsTool>True</PackAsTool>
+    <ToolCommandName>shpytchuk_lab4</ToolCommandName>
+    <PackageId>shpytchuk</PackageId>
   </PropertyGroup>
       <ItemGroup>
       <ProjectReference Include="..\lab-1\lab-1.csproj" />
