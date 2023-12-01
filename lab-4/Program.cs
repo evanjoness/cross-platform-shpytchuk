@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
-using McMaster.Extensions.CommandLineUtils;
+﻿using McMaster.Extensions.CommandLineUtils;
 using Labs;
-using System.Collections.Generic;
+
 
 [Command(Name = "lab-runner", Description = "A utility for running different lab programs.")]
 [Subcommand(typeof(VersionCommand), typeof(RunLabCommand), typeof(SetPathCommand))]
@@ -10,23 +8,7 @@ class LabRunnerApp
 {
     static int Main(string[] args)
     {
-        while (true)
-        {
-            try
-            {
-                //test data
-                //args = new[] { "run", "lab2", "-I", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-2\INPUT.txt",
-                //    "-o", @"D:\fit\cross-platform\cross-platform-shpytchuk\lab-2\OUTPUT.txt" };
-                return CommandLineApplication.Execute<LabRunnerApp>(args);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                Console.WriteLine("Use --help");
-                return 1;
-            }
-        }
-
+        return CommandLineApplication.Execute<LabRunnerApp>(args);
     }
 }
 
@@ -46,7 +28,7 @@ public class RunLabCommand
     [Argument(0, Description = "Name of the lab - lab1, lab2, lab3)")]
     public string Lab { get; set; }
 
-    [Option("-I|--input <INPUT>", Description = "Path to input file")]
+    [Option("-i|--input <INPUT>", Description = "Path to input file")]
     public string Input { get; set; }
 
     [Option("-o|--output <OUTPUT>", Description = "Path to output file")]
@@ -64,14 +46,53 @@ public class RunLabCommand
     {
         if (LabRunners.ContainsKey(Lab))
         {
-            LabRunners[Lab](Input, Output);
-            Console.WriteLine($"Running {Lab} with input={Input} and output={Output}");
+            string inputPath = Input;
+            string outputPath = Output;
+
+            if (string.IsNullOrEmpty(inputPath))
+            {
+                inputPath = Environment.GetEnvironmentVariable("LAB_PATH", EnvironmentVariableTarget.User);
+                if (string.IsNullOrEmpty(inputPath))
+                {
+                    inputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "input.txt");
+                }
+                else
+                {
+                    inputPath = Path.Combine(inputPath, "input.txt");
+                }
+            }
+
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                outputPath = Environment.GetEnvironmentVariable("LAB_PATH", EnvironmentVariableTarget.User);
+                if (string.IsNullOrEmpty(outputPath))
+                {
+                    outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "output.txt");
+                }
+                else
+                {
+                    outputPath = Path.Combine(outputPath, "output.txt");
+                }
+            }
+
+            if (File.Exists(inputPath))
+            {
+                LabRunners[Lab](inputPath, outputPath);
+                Console.WriteLine($"Running {Lab} with input={inputPath} and output={outputPath}");
+            }
+            else
+            {
+                Console.Error.WriteLine($"Error: Cannot find input.txt file at {inputPath}.");
+                Console.WriteLine($"Resolved input path: {inputPath}");
+                Console.WriteLine($"Resolved output path: {outputPath}");
+            }
         }
         else
         {
-            Console.Error.WriteLine($"Error: Unknown lab {Lab}.");  
+            Console.Error.WriteLine($"Error: Unknown lab {Lab}.");
         }
     }
+
 }
 
 [Command("set-path", Description = "Sets the path to the folder with input and output files.")]
@@ -84,8 +105,9 @@ public class SetPathCommand
     {
         try
         {
-            File.WriteAllText("config.txt", Path);
+            Environment.SetEnvironmentVariable("LAB_PATH", Path, EnvironmentVariableTarget.User);
             Console.WriteLine($"Successfully set LAB_PATH to {Path}");
+
         }
         catch (Exception ex)
         {

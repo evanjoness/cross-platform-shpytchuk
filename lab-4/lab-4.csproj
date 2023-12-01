@@ -9,8 +9,9 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Shpytchuk-lab-4</Title>
     <PackAsTool>True</PackAsTool>
-    <ToolCommandName>shpytchuk_lab4</ToolCommandName>
-    <PackageId>shpytchuk</PackageId>
+    <ToolCommandName>shpytchuk_lab</ToolCommandName>
+    <PackageId>shpytchukLab4</PackageId>
+    <Version>1.0.3</Version>
   </PropertyGroup>
       <ItemGroup>
       <ProjectReference Include="..\lab-1\lab-1.csproj" />

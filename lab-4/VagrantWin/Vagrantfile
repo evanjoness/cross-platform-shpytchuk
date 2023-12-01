@@ -11,6 +11,6 @@ Vagrant.configure("2") do |config|
 
     Invoke-WebRequest -Uri https://download.visualstudio.microsoft.com/download/pr/81531ad6-afa9-4b61-9d05-6a76dce81123/2885d26c1a58f37176fd7859f8cc80f1/dotnet-sdk-6.0.417-win-x64.exe -OutFile dotnet-sdk-6.0.417-win-x64.exe
     Start-Process -FilePath dotnet-sdk-7.0.417-win-x64.exe
-    sudo dotnet tool install --global shpytchuk --version 1.0.0
+    dotnet tool install --global shpytchukLab4 --version 1.0.3
   SHELL
 end
